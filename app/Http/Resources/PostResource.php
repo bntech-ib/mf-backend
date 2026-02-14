@@ -15,22 +15,12 @@ class PostResource extends ResourceCollection
     public function toArray(Request $request): array
     {
     
-            return [
-            'id' => $this->id,
+            return [ 
             'content' => $this->content,
-            'image' => $this->image,
-            
-            'author' => [
-                'id' => $this->user->id,
+            'media_url' => $this->image, 
+            'author' => [ 
                 'name' => $this->user->name,
-            ],
-
-            'likes_count' => $this->likes_count,
-            'comments_count' => $this->comments_count,
-            'is_liked' => (bool) $this->is_liked,
-
-            'created_at' => $this->created_at->diffForHumans(),
-            'created_at_timestamp' => $this->created_at,
+            ], 
         ];
     }
 }

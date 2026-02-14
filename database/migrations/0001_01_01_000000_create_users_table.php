@@ -13,8 +13,17 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('favorite_club_id')
+                ->nullable()
+                ->constrained('clubs')
+                ->nullOnDelete();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('username')->unique();
+            $table->string('avatar')->nullable();
+            $table->unsignedBigInteger('points')->default(0);
+            $table->boolean('is_verified')->default(false);
+
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
