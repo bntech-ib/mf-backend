@@ -30,5 +30,10 @@ class Club extends Model
     {
         return $this->hasMany(User::class, 'favorite_club_id');
     }
+
+    public function posts()
+{
+    return $this->morphMany(Post::class, 'poster');
+}
 }
 

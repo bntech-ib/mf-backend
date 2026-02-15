@@ -14,14 +14,13 @@ class Community extends Model
     use HasFactory;
     //
 
-
-protected $fillable = [
-    'name',
-    'slug',
-    'description',
-    'owner_id',
-    'privacy',
-];
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'owner_id',
+        'privacy',
+    ];
 
     public function owner(): BelongsTo
     {
@@ -37,9 +36,14 @@ protected $fillable = [
          ->withTimestamps();
     }
 
-    public function posts(): HasMany
-    {
-        return $this->hasMany(Post::class);
-    }
+ 
+    public function posts()
+{
+    return $this->morphMany(Post::class, 'poster');
+}
 
+public function chat()
+{
+    return $this->morphOne(Chat::class, 'chatable');
+}
 }

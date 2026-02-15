@@ -13,15 +13,12 @@ class Reaction extends Model
     use HasFactory;
     //
 
-
-    protected $fillable = [
-    'user_id',
-    'reactable_id',
-    'reactable_type',
-    'type',
-];
-
-
+   protected $fillable = [
+        'user_id',
+        'reactable_id',
+        'reactable_type',
+        'type',
+    ];
 
     public function user(): BelongsTo
     {
@@ -32,5 +29,4 @@ class Reaction extends Model
     {
         return $this->morphTo();
     }
-
 }

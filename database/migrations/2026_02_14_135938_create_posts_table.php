@@ -26,8 +26,14 @@ return new class extends Migration
             $table->text('content');
             $table->string('media_url')->nullable();
 
-            $table->enum('visibility', ['public', 'followers', 'private'])
-                ->default('public');
+
+    $table->enum('visibility', [
+        'public',
+        'members',
+        'followers',
+        'private'
+    ])->default('public');
+
 
             $table->timestamps();
 

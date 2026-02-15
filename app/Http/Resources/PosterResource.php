@@ -5,22 +5,25 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class PosterResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
      */
-   public function toArray($request)
+ public function toArray($request)
     {
-        return match (class_basename($this->resource)) {
+        $type = class_basename($this->resource);
+
+        return match ($type) {
 
             'User' => [
                 'type' => 'user',
                 'id' => $this->id,
                 'name' => $this->name,
                 'avatar' => $this->avatar,
+                'username' => $this->username,
             ],
 
             'Community' => [
@@ -28,6 +31,7 @@ class UserResource extends JsonResource
                 'id' => $this->id,
                 'name' => $this->name,
                 'logo' => $this->logo,
+                'members_count' => $this->members_count ?? null,
             ],
 
             'Club' => [
@@ -35,6 +39,7 @@ class UserResource extends JsonResource
                 'id' => $this->id,
                 'name' => $this->name,
                 'logo' => $this->logo,
+                'league' => $this->league,
             ],
         };
     }

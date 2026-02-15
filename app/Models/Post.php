@@ -15,18 +15,17 @@ class Post extends Model
 {
     use HasFactory;
     //
+   protected $fillable = [
+        'user_id',
+        'community_id',
+        'content',
+        'media_url',
+        'visibility',
+    ];
 
-protected $fillable = [
-    'user_id',
-    'community_id',
-    'content',
-    'media_url',
-    'visibility',
-];
-
-
-
-
+    /* ===========================
+       Author
+    ============================*/
 
     public function user(): BelongsTo
     {
@@ -69,6 +68,10 @@ protected $fillable = [
         return $this->hasOne(PostMetric::class);
     }
 
+        public function poster()
+    {
+        return $this->morphTo(name: 'poster');
+    }
 
 
 }

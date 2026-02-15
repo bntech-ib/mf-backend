@@ -24,35 +24,16 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
+        'avatar',
+        'points',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
-
-
-
+    /* ===========================
+       Followers System
+    ============================*/
 
     public function followers(): BelongsToMany
     {
@@ -77,11 +58,7 @@ class User extends Authenticatable
     /* ===========================
        Posts
     ============================*/
-
-    public function posts(): HasMany
-    {
-        return $this->hasMany(Post::class);
-    }
+ 
 
     /* ===========================
        Comments
@@ -127,5 +104,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(RewardLog::class);
     }
+    public function posts()
+{
+    return $this->morphMany(Post::class, 'poster');
+}
 
 }

@@ -7,16 +7,21 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class LeaderboardResource extends JsonResource
 {
-    public function toArray($request)
+  public function toArray($request)
     {
         return [
-            'rank' => $this->rank,
-            'user' => [
-                'id' => $this->user->id,
-                'name' => $this->user->name,
-                'avatar' => $this->user->avatar,
-            ],
-            'points' => $this->points,
+            'leaderboard_type' => $this->type,
+            'entity_id' => $this->entity_id,
+
+            'top_fans' => LeaderboardEntryResource::collection(
+                $this->entries
+            ),
+
+            'current_user_rank' => $this->current_user_rank,
+
+            'total_participants' => $this->total_users,
+
+            'updated_at' => now(),
         ];
     }
 }

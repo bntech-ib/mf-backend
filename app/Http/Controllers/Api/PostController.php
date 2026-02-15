@@ -17,11 +17,27 @@ class PostController extends Controller
 
 
     public function index(Request $request){
-        $post =Post::latest()
-    ->paginate(10);
+ 
+
+
+     $posts = Post::with('poster')
+    ->withCount([
+        'reactions as likes_count' => fn ($q) =>
+            $q->where('type', 'like'),
+
+        'comments'
+    ])
+    ->withExists([
+        'reactions as is_liked' => fn ($q) =>
+            $q->where('type', 'like')
+    ])
+    ->latest()
+    ->paginate(15);
+
+
         // $score = (likes * 2) + (comments * 3) - hours_since_post;
         return response()->json([   
-            'post'=> $post ,
+            'post'=>PostResource::collection($posts)  ,
             ]);
  
     }
@@ -54,6 +70,10 @@ class PostController extends Controller
     public function destroy($id){
 
     }
+
+
+
+
 
     public function like(Post $id){  
 
