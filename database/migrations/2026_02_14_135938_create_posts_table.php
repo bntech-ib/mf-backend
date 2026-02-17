@@ -14,31 +14,50 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnDelete();
+            /* =========================
+       Who created the post
+       (User / Community / Club)
+    ==========================*/
+
+            $table->morphs('poster');
+
+            /* =========================
+       Where the post is posted
+       (Optional community context)
+    ==========================*/
 
             $table->foreignId('community_id')
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
 
+            /* =========================
+       Content
+    ==========================*/
+
             $table->text('content');
             $table->string('media_url')->nullable();
 
+            /* =========================
+       Visibility
+    ==========================*/
 
-    $table->enum('visibility', [
-        'public',
-        'members',
-        'followers',
-        'private'
-    ])->default('public');
-
+            $table->enum('visibility', [
+                'public',
+                'members',
+                'followers',
+                'private'
+            ])->default('public');
 
             $table->timestamps();
 
-            $table->index(['user_id', 'created_at']);
+            /* =========================
+       Indexes
+    ==========================*/
+
+            $table->index(['poster_id', 'poster_type']);
             $table->index('community_id');
+            $table->index('created_at');
         });
     }
 

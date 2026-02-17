@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
     User::withoutEvents(function () {
 
         // 1️⃣ Create Users
-        $users = User::factory()->count(1000)->create();
+        $users = User::factory()->count(50)->create();
 
         // 2️⃣ Create Communities
         $communities = Community::factory()->count(50)->create();
@@ -36,21 +36,21 @@ class DatabaseSeeder extends Seeder
         // 3️⃣ Attach Community Members
         foreach ($communities as $community) {
             $community->members()->attach(
-                $users->random(rand(10, 100))->pluck('id')->toArray()
+                $users->random(rand(0, 50))->pluck('id')->toArray()
             );
         }
 
         // 4️⃣ Create Posts
-        $posts = Post::factory()->count(5000)->create();
+        $posts = Post::factory()->count(50)->create();
 
         // 5️⃣ Create Comments
-        Comment::factory()->count(15000)->create();
+        Comment::factory()->count(500)->create();
 
         // 6️⃣ Create Reactions
-        Reaction::factory()->count(20000)->create();
+        Reaction::factory()->count(50)->create();
 
         // 7️⃣ Create Reward Logs
-        RewardLog::factory()->count(5000)->create();
+        RewardLog::factory()->count(50)->create();
 
         // 8️⃣ Create Followers (Randomized pairs)
         $followers = [];

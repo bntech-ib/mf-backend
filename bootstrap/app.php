@@ -1,8 +1,11 @@
 <?php
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Http\Middleware\ForceJsonResponse;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -13,7 +16,35 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         //
+        
+    $middleware->api(prepend: [
+        ForceJsonResponse::class,
+    ]);
+        
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
+ 
+
+       $exceptions->render(function (
+        AuthenticationException $e,
+        $request
+    ) {
+        return response()->json([
+            'message' => 'Unauthenticated.'
+        ], 401);
+    });
+
+    // 404 Not Found
+    $exceptions->render(function (
+        NotFoundHttpException $e,
+        $request
+    ) {
+        return response()->json([
+            'message' => ' not found.'
+        ], 404);
+    });
+
+
+
     })->create();

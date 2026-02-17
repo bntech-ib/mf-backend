@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany; 
 use App\Models\Reward_log as RewardLog;
+use Laravel\Sanctum\HasApiTokens;
 
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -26,7 +26,7 @@ class User extends Authenticatable
         'name',
         'username',
         'email',
-        'password',
+        'password', 
         'avatar',
         'points',
     ];
@@ -87,14 +87,26 @@ class User extends Authenticatable
         return $this->hasMany(Community::class, 'owner_id');
     }
 
-    public function communities(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Community::class,
-            'community_members'
-        )->withPivot('role')
-         ->withTimestamps();
-    }
+public function predictions()
+{
+    return $this->hasMany(Prediction::class);
+}
+
+public function communities()
+{
+    return $this->belongsToMany(
+        Community::class,
+        'community_members'
+    )->withPivot('role');
+}
+
+public function badges()
+{
+    return $this->belongsToMany(
+        Badge::class,
+        'user_badges'
+    )->withTimestamps();
+}
 
     /* ===========================
        Rewards
@@ -107,6 +119,11 @@ class User extends Authenticatable
     public function posts()
 {
     return $this->morphMany(Post::class, 'poster');
+}
+
+public function favoriteClub()
+{
+    return $this->belongsTo(Club::class, 'favorite_club_id');
 }
 
 }

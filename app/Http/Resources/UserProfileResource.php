@@ -1,23 +1,18 @@
 <?php
-
+ 
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
-class UserResource extends JsonResource
+class UserProfileResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-  public function toArray(Request $request): array
+    public function toArray(Request $request): array
     {
         return [
 
             /* =========================
-               Identity
+               Basic Info
             ==========================*/
 
             'id' => $this->id,
@@ -35,16 +30,12 @@ class UserResource extends JsonResource
             ),
 
             /* =========================
-               Fan Stats
+               Stats
             ==========================*/
-
-            'points' => $this->points,
-            'tier' => $this->tier,
 
             'posts_count' => $this->posts_count ?? 0,
             'followers_count' => $this->followers_count ?? 0,
             'following_count' => $this->following_count ?? 0,
-            'predictions_count' => $this->predictions_count ?? 0,
 
             /* =========================
                Relationship to Viewer
@@ -52,6 +43,13 @@ class UserResource extends JsonResource
 
             'is_followed' => (bool) ($this->is_followed ?? false),
             'is_self' => Auth::user()->id === $this->id,
+
+            /* =========================
+               Points / Fan System
+            ==========================*/
+
+            'points' => $this->points,
+            'tier' => $this->tier ?? null,
 
             /* =========================
                Metadata
@@ -62,3 +60,4 @@ class UserResource extends JsonResource
         ];
     }
 }
+

@@ -22,28 +22,40 @@ class Community extends Model
         'privacy',
     ];
 
-    public function owner(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'owner_id');
-    }
+public function owner()
+{
+    return $this->belongsTo(User::class, 'owner_id');
+}
 
-    public function members(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            User::class,
-            'community_members'
-        )->withPivot('role')
-         ->withTimestamps();
-    }
 
- 
-    public function posts()
+public function members()
+{
+    return $this->belongsToMany(User::class, 'community_members')
+        ->withPivot('role')
+        ->withTimestamps();
+}
+
+public function posts()
 {
     return $this->morphMany(Post::class, 'poster');
 }
+
+public function comments()
+{
+    return $this->hasManyThrough(
+        Comment::class,
+        Post::class,
+        'poster_id',
+        'post_id'
+    )->where('poster_type', self::class);
+}
+
+
 
 public function chat()
 {
     return $this->morphOne(Chat::class, 'chatable');
 }
+
+
 }

@@ -21,7 +21,7 @@ public function toArray($request): array
 
             'id' => $this->id,
             'content' => $this->content,
-            'media' => $this->media_url,
+            'media' => $this->media_url ?? false,
 
             /* =========================
                Poster (User/Community/Club)
