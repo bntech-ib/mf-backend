@@ -27,6 +27,12 @@ public function owner()
     return $this->belongsTo(User::class, 'owner_id');
 }
 
+public function chats()
+{
+    return $this->hasMany(CommunityChat::class);
+}
+
+
 
 public function members()
 {

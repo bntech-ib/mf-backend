@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BadgeResource;
 use App\Http\Resources\ClubResource;
 use App\Http\Resources\PostResource;
+use App\Http\Resources\PredictionResource;
 use App\Http\Resources\UserProfileResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -33,29 +34,29 @@ class UserController extends Controller
      * Public profile
      * GET /users/{user}
      */
-    public function show(User $user)
-    {
-        $authId = Auth::user()->id;
+public function show(User $user)
+{
+    $authId = Auth::user()->id;
 
-        $user->load('favoriteClub')
-            ->loadCount([
-                'posts',
-                'followers',
-                'following',
-                'predictions',
-            ])
-            ->loadExists([
-                'followers as is_followed' => function ($q) use ($authId) {
-                    if ($authId) {
-                        $q->where('follower_id', $authId);
-                    } else {
-                        $q->whereRaw('false');
-                    }
+    $user->load('favoriteClub')
+        ->loadCount([
+            'posts',
+            'followers',
+            'following',
+            'predictions',
+        ])
+        ->loadExists([
+            'followers as is_followed' => function ($q) use ($authId) {
+                if ($authId) {
+                    $q->where('follower_id', $authId);
+                } else {
+                    $q->whereRaw('false');
                 }
-            ]);
+            }
+        ]);
 
-        return new UserResource($user);
-    }
+    return new UserResource($user);
+}
 
     public function posts(User $user)
 {
@@ -81,20 +82,18 @@ class UserController extends Controller
 
 public function badges(User $user)
 {
-    $badges = $user->badges()
-        ->latest('user_badges.created_at')
-        ->get();
-
-    return BadgeResource::collection($badges);
+    return BadgeResource::collection(
+        $user->badges()->latest()->get()
+    );
 }
  
 public function clubs(User $user)
 {
-    $clubs = $user->clubs()
-        ->withPivot(['loyalty_score', 'is_primary'])
-        ->get();
-
-    return ClubResource::collection($clubs);
+    return ClubResource::collection(
+        $user->clubs()
+            ->withPivot(['loyalty_score', 'is_primary'])
+            ->get()
+    );
 }
 public function followers(User $user)
 {
@@ -112,6 +111,49 @@ public function following(User $user)
         ->paginate(30);
 
     return UserResource::collection($following);
+}
+public function userPredictions(User $user)
+{
+    $predictions = $user->predictions()
+        ->with('match')
+        ->latest()
+        ->paginate(20);
+
+    return PredictionResource::collection($predictions);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+public function update(Request $request)
+{
+    $user = $request->user();
+
+    $data = $request->validate([
+        'name' => ['sometimes', 'string', 'max:255'],
+        'username' => [
+            'sometimes',
+            'string',
+            'max:20',
+            "unique:users,username,{$user->id}"
+        ],
+        'bio' => ['nullable', 'string', 'max:100'],
+        'avatar' => ['nullable', 'url'],
+        'favorite_club_id' => ['nullable', 'exists:clubs,id'],
+    ]);
+
+    $user->update($data);
+
+    return new UserResource($user->fresh());
 }
 
 }

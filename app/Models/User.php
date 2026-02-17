@@ -121,9 +121,27 @@ public function badges()
     return $this->morphMany(Post::class, 'poster');
 }
 
+public function clubs()
+{
+    return $this->belongsToMany(
+        Club::class,
+        'fan_clubs'
+    )->withPivot([
+        'loyalty_score',
+        'is_primary',
+        'joined_at'
+    ]);
+}
+
+public function createdChats()
+{
+    return $this->hasMany(
+        CommunityChat::class,
+        'created_by'
+    );
+}
 public function favoriteClub()
 {
     return $this->belongsTo(Club::class, 'favorite_club_id');
 }
-
 }

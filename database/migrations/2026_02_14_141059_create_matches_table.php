@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('matches', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('home_club_id')->constrained('clubs');
             $table->foreignId('away_club_id')->constrained('clubs');
+
+            $table->dateTime('kickoff_at');
+            $table->enum('status', ['scheduled', 'live', 'finished']);
+
             $table->integer('home_score')->nullable();
             $table->integer('away_score')->nullable();
-            $table->timestamp('kickoff_at');
-            $table->boolean('is_finished')->default(false);
+
             $table->timestamps();
         });
     }

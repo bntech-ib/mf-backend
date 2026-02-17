@@ -9,7 +9,7 @@ class Matchs extends Model
     //
 
 
-    
+
     protected $fillable = [
         'home_club_id',
         'away_club_id',
@@ -41,6 +41,6 @@ class Matchs extends Model
 
     public function predictions()
     {
-        return $this->hasMany(MatchPrediction::class);
+        return $this->hasMany(Prediction::class);
     }
 }

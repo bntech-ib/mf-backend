@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prediction', function (Blueprint $table) {
+        Schema::create('predictions', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('match_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('match_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
             $table->integer('home_score_predicted');
             $table->integer('away_score_predicted');
@@ -25,6 +30,7 @@ return new class extends Migration
 
             $table->timestamps();
 
+            // One prediction per user per match
             $table->unique(['user_id', 'match_id']);
         });
     }
@@ -34,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prediction');
+        Schema::dropIfExists('predictions');
     }
 };

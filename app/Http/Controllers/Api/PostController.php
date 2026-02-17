@@ -10,7 +10,7 @@ use App\Events\PostLiked;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\PostResource;
 
-
+use App\Services\LoyaltyService;
 class PostController extends Controller
 {
     //
@@ -51,6 +51,8 @@ class PostController extends Controller
     ]);
 
     PostCreated::dispatch($post); 
+     
+
     return response()->json(['message' => 'Post created']);
 
     }

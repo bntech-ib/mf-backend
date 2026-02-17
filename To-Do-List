@@ -1,13 +1,4 @@
-
-
--AI-powered match prediction difficulty
-
--Rival club battle system
-
--Weekly fantasy scoring
-
--AI-powered match prediction difficulty
-
+  
 -Multi-league architecture
 
 -Full API Resource layer for fan dashboard
@@ -28,3 +19,103 @@
 -Role-based moderation tools
 -Event-driven engagement engine
 -Multi-league football ecosystem
+-Notification system across entities
+
+
+--COMMUNITY_MESSAGES .......
+--COMMUNITY_CHATS 
+--MEDIA_ASSETS
+--SHARES
+--POST_VIEWS
+--PREDICTION_LEADERBOARDS
+--FAN_LOYALTY_SCORES
+--PREDICTIONS
+--WALLETS
+--WALLET_TRANSACTIONS
+--REWARD_LOGS
+--USER_BADGES
+--NOTIFICATIONS
+--REPORTS
+--BANS
+
+
+
+Users
+ ├── Followers (self-join)
+ ├── Posts
+ ├── Comments
+ ├── Reactions
+ ├── Predictions
+ ├── Loyalty Scores
+ ├── Wallet
+ └── Communities
+
+Clubs
+ ├── Matches
+ ├── Seasons
+ └── Fan Loyalty
+
+Communities
+ ├── Members
+ ├── Chats
+ └── Posts
+
+Matches
+ ├── Predictions
+ └── Events
+
+
+
+
+
+
+
+
+
+route: User
+
+
+Get--/user/profile                  -view profile
+Get--/user/followers                 -view followers
+Get--/user/following                 -view following
+Get--/user/wallet                    -view wallet
+Get--/user/badge                     -get badge
+Get--/user/badges                    -view badges
+Get--/user/badges                    -view badges
+Get--/user/reward/redeem             -redeem reward
+Patch--/user/update                  -update user data
+Post--/user/p/badge/{badge}          -Buy badge
+Post--/user/{user}/follow            -follow user
+Post--/user/{user}/unfollow            -unfollow user
+Post--/user/{user}/chat                -chat users
+
+
+
+route:Community
+
+
+Post--/community/{id}/join             -join community
+Post--/community/{id}/leave            -leave community
+Get --/community/{id}/leaderboard      -leaderboard community
+Get --/community/{id}/chat             -chat community
+Get --/community/{id}/feed             -feed community
+
+
+ 
+
+
+route:club
+
+Get--/clubs                                -view clubs
+Get--/club/{club}                          -view unique club
+Get--/club/fans                            -view club fans
+Get--/club/fan/leaderbord                  
+-view club fan leaderbord list
+Get--/club/feed                            -view club feed
+Post--/club/{club}/post                    -post in club
+
+
+
+route: <mjkjkkkkk,
+
+>

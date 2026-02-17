@@ -14,6 +14,23 @@ class PredictionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+                return [
+            'id' => $this->id,
+
+            'match' => [
+                'id' => $this->match->id,
+                'home_club_id' => $this->match->home_club_id,
+                'away_club_id' => $this->match->away_club_id,
+                'kickoff_at' => $this->match->kickoff_at,
+            ],
+
+            'predicted_score' => [
+                'home' => $this->home_score_predicted,
+                'away' => $this->away_score_predicted,
+            ],
+
+            'points_awarded' => $this->points_awarded,
+            'is_scored' => $this->is_scored,
+        ];
     }
 }
